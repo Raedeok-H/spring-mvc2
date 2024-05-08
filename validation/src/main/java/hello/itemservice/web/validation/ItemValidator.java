@@ -1,15 +1,18 @@
 package hello.itemservice.web.validation;
 
 import hello.itemservice.domain.item.Item;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
+@Slf4j
 public class ItemValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
+        log.info("True Or False={}", Item.class.isAssignableFrom(clazz));
         return Item.class.isAssignableFrom(clazz);
         // item == clazz
         // item == clazz 의 자식 클래스
@@ -18,7 +21,7 @@ public class ItemValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Item item = (Item) target;
-        // BingingResult 의 부모클래스 -> Errors
+        // BindingResult 의 부모클래스 -> Errors
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "itemName", "required");
 
