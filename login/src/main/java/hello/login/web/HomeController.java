@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.filter.RequestContextFilter;
 
 @Slf4j
@@ -57,7 +58,7 @@ public class HomeController {
         return "loginHome";
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV3(HttpServletRequest request, Model model) {
 
         HttpSession session = request.getSession(false); // 로그인 하지 않은 사용자도 있기 때문에 false 로 해서 세션을 생성하지 않도록 한다.
@@ -66,6 +67,24 @@ public class HomeController {
         }
 
         Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        // 세션에 회원 데이터가 없으면 home
+        if (loginMember == null) {
+            return "home";
+        }
+
+        //세션이 유지되면 로그인으로 이동
+        model.addAttribute("member", loginMember);
+        return "loginHome";
+    }
+
+    /**
+     * 이미 로그인 된 사용자를 찾을 때는 다음과 같이 사용하면 된다.
+     *  @SessionAttribute 는 세션을 생성하지 않는다.
+     */
+    @GetMapping("/")
+    public String homeLoginV3Spring(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
 
         // 세션에 회원 데이터가 없으면 home
         if (loginMember == null) {
