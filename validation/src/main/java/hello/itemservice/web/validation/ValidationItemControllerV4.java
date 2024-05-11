@@ -2,8 +2,8 @@ package hello.itemservice.web.validation;
 
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
-import hello.itemservice.domain.item.SaveCheck;
-import hello.itemservice.domain.item.UpdateCheck;
+import hello.itemservice.web.validation.form.ItemSaveForm;
+import hello.itemservice.web.validation.form.ItemUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,17 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ValidationItemControllerV4 {
 
-    /**
-     * 스프링 부트가 spring-boot-starter-validation 라이브러리를 넣으면,
-     * 자동으로 Bean Validator를 인지하고 스프링에 통합한다
-     *
-     * 이 Validator는 @NotNull 같은 애노테이션을 보고 검증을 수행한다.
-     * 이렇게 글로벌 Validator가 적용되어 있기 때문에, @Valid , @Validated 만 적용하면 된다.
-     * 검증 오류가 발생하면, FieldError , ObjectError 를 생성해서 BindingResult 에 담아준다.
-     *
-     * 직접 글로벌 Validator를 직접 등록하면 스프링 부트는 Bean Validator를 글로벌 Validator 로 등록
-     * 하지 않는다. 따라서 애노테이션 기반의 빈 검증기가 동작하지 않는다.
-     */
     private final ItemRepository itemRepository;
 
     @GetMapping
@@ -55,11 +44,11 @@ public class ValidationItemControllerV4 {
     }
 
 
-//    @PostMapping("/add")
-    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    @PostMapping("/add")
+    public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         //특정 필드 예외가 아닌 전체 예외
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
+        if (form.getPrice() != null && form.getQuantity() != null) {
+            int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
                 bindingResult.reject("totalPriceMin", new Object[]{10000,
                         resultPrice}, null);
@@ -72,31 +61,10 @@ public class ValidationItemControllerV4 {
             return "validation/v4/addForm";
         }
 
-
-        // 성공 로직
-        Item savedItem = itemRepository.save(item);
-        redirectAttributes.addAttribute("itemId", savedItem.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/validation/v4/items/{itemId}";
-    }
-
-    @PostMapping("/add") //groups 기능은 @Valid 는 사용불가하다
-    public String addItem2(@Validated(SaveCheck.class) @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        //특정 필드 예외가 아닌 전체 예외
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
-            if (resultPrice < 10000) {
-                bindingResult.reject("totalPriceMin", new Object[]{10000,
-                        resultPrice}, null);
-            }
-        }
-
-        //검증에 실패하면 다시 입력 폼으로
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "validation/v4/addForm";
-        }
-
+        Item item = new Item();
+        item.setItemName(form.getItemName());
+        item.setPrice(form.getPrice());
+        item.setQuantity(form.getQuantity());
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
@@ -113,32 +81,11 @@ public class ValidationItemControllerV4 {
         return "validation/v4/editForm";
     }
 
-//    @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @Validated @ModelAttribute Item item, BindingResult bindingResult) {
-        //특정 필드 예외가 아닌 전체 예외
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
-            if (resultPrice < 10000) {
-                bindingResult.reject("totalPriceMin", new Object[]{10000,
-                        resultPrice}, null);
-            }
-        }
-
-        //검증에 실패하면 다시 입력 폼으로
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "validation/v4/editForm";
-        }
-
-        itemRepository.update(itemId, item);
-        return "redirect:/validation/v4/items/{itemId}";
-    }
-
     @PostMapping("/{itemId}/edit")
-    public String edit2(@PathVariable Long itemId, @Validated(UpdateCheck.class) @ModelAttribute Item item, BindingResult bindingResult) {
-        //특정 필드 예외가 아닌 전체 예외
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
+    public String edit(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult) {
+        //특정 필드 예외가 아닌 전체 예외                // 이름을 지정해주지 않으면 itemUpdateForm 처럼 설정됨
+        if (form.getPrice() != null && form.getQuantity() != null) {
+            int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
                 bindingResult.reject("totalPriceMin", new Object[]{10000,
                         resultPrice}, null);
@@ -151,7 +98,13 @@ public class ValidationItemControllerV4 {
             return "validation/v4/editForm";
         }
 
-        itemRepository.update(itemId, item);
+
+        Item itemParam = new Item();
+        itemParam.setItemName(form.getItemName());
+        itemParam.setPrice(form.getPrice());
+        itemParam.setQuantity(form.getQuantity());
+
+        itemRepository.update(itemId, itemParam);
         return "redirect:/validation/v4/items/{itemId}";
     }
 
