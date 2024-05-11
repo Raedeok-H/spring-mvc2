@@ -10,8 +10,18 @@ import org.hibernate.validator.constraints.Range;
 public class Item {
 
     private Long id;
-
-    @NotBlank
+    /**
+     * BeanValidation 메시지 찾는 순서
+     *
+     * 1. 생성된 메시지 코드 순서대로 messageSource 에서 메시지 찾기
+     *                              NotBlank.item.itemName
+     *                              NotBlank.itemName
+     *                              NotBlank.java.lang.String
+     *                              NotBlank
+     * 2. 애노테이션의 message 속성 사용 @NotBlank(message = "공백! {0}")
+     * 3. 라이브러리가 제공하는 기본 값 사용 공백일 수 없습니다.
+     */
+    @NotBlank(message = "공백!")
     private String itemName;
 
     @NotNull
