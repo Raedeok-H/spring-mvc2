@@ -1,0 +1,36 @@
+** 하이버네이트 Validator 관련 링크
+    공식 사이트: http://hibernate.org/validator/
+    공식 메뉴얼: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/
+    검증 애노테이션 모음: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/#validator-defineconstraints-spec
+
+
+
+** 정리
+    build.gradle 에 아래를 추가해야 Bean Validation 을 사용 가능하다.
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+    * Jakarta Bean Validation
+    jakarta.validation-api -> Bean Validation 의 인터페이스이고
+       hibernate-validator -> 구현체이다.
+
+
+    ** Bean Validation 의 한계
+        ex) 등록시에는 quantity 를 9999까지만 되는데,
+            수정시에는 제한하지 않고,
+
+            등록시에는 id가 없어도 되지만,
+            수정시에는 id 값이 필수이다.
+
+        위 같은 상황에서 2가지 방법이 있는데,
+        1.groups, 2. 전송 객체 분리가 있다.
+        groups 는 복잡도가 올라가서 실제로 잘 사용하지 않는다.
+        전송 객체 분리를 사용하면 된다.
+
+    ** 전솧객체 분리
+        SaveItem, UpdateItem 처럼 분리하여 DTO 를 만드는 것이다.
+
+        검증시 위처럼 기존 Item 객체에서
+        id 가 필요 없는 상황, 값의 제한이 바뀌는 상황등
+        상황마다 검증 항목이나 사항이 바뀌게 되면,
+        DTO 를 분리하여 쓰면 된다
