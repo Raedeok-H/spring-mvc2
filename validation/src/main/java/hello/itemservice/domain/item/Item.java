@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.ScriptAssert;
 //@ScriptAssert(lang = "javascript", script = "_this.price * _this.quantity >= 10000", message = "총합이 10000원 넘게 입력해주세요")
 // 기능이 제한적이고 약하다.
 public class Item {
-
+    @NotNull // 수정 요구사항 추가
     private Long id;
     /**
      * BeanValidation 메시지 찾는 순서
@@ -32,7 +32,7 @@ public class Item {
     private Integer price;
 
     @NotNull
-    @Max(9999)
+//    @Max(9999) // 수정 요구사항 추가
     private Integer quantity;
 
     public Item() {
