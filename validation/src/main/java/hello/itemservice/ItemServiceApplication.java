@@ -1,20 +1,12 @@
 package hello.itemservice;
 
-import hello.itemservice.web.validation.ItemValidator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.validation.Validator;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class ItemServiceApplication{ //implements WebMvcConfigurer {
-								    // 글로벌 설정할 때
+public class ItemServiceApplication{
 	public static void main(String[] args) {
 		SpringApplication.run(ItemServiceApplication.class, args);
 	}
-
-//	@Override
-//	public Validator getValidator() {
-//		return new ItemValidator();
-//	}
+// 애노테이션 기반 빈 검증을 위해 글로벌 설정 제거
 }
