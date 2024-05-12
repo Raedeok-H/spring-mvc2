@@ -84,5 +84,17 @@
 
     개발자는 BasicErrorController 가 제공하는 룰과 우선순위에 따라서 추가만 해주면 된다.
         정적 HTML 이면 -> 정적 리소스
-        뷰 템플릿을 사용해서 동적으로 오류 화면을 만들고 싶으면 -> 뷰 템플릿 경로
+        뷰 템플릿을 사용해서 동적으로 오류 화면을 만들고 싶으면 -> 뷰 템플릿 경로(templates/error)
     - 오류 페이지 파일을 만들어서 넣어두기만 하면 된다.
+
+    BasicErrorController 오류 컨트롤러에서 다음 오류 정보를 model 에 포함할지 여부 선택할 수 있다.
+    application.properties(never : 사용하지 않음
+                           always :항상 사용
+                           on_param : 파라미터가 있을 때 사용)
+        server.error.include-exception=true
+        server.error.include-message=on_param
+        server.error.include-stacktrace=on_param
+        server.error.include-binding-errors=on_param
+
+    ** 실무에서는 이것들을 노출하면 안된다!
+       사용자에게는 이쁜 오류 화면과 고객이 이해할 수 있는 간단한 오류 메시지를 보여주고 오류는 서버에 로그로 남겨서 로그로 확인해야 한다
