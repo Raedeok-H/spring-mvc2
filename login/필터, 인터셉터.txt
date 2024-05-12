@@ -66,3 +66,10 @@
        {spring:[a-z]+}  matches the regexp [a-z]+ as a path variable named "spring"
        {spring:[a-z]+}  regexp [a-z]+ 와 일치하고, "spring" 경로 변수로 캡처
        {*spring}        경로가 끝날 때 까지 0개 이상의 경로(/)와 일치하고 spring 이라는 변수로 캡처
+
+
+** 정리
+    빈으로 사용
+        필터와 인터셉터 모두 컴포넌트로 설정해서 Bean 자동 주입을 활용해서 써도 된다.
+
+    스프링 MVC 를 사용한다면 인터셉터를 사용하는 것이 개발하기 편하다.
