@@ -22,3 +22,11 @@
 
     ** 필터 체인(여러개도 가능하다 ex) log 관련, login 관련 ... 등)
       HTTP 요청 -> WAS -> 필터1 -> 필터2 -> 필터3 -> 서블릿 -> 컨트롤러
+
+
+    ** 참고
+       @ServletComponentScan @WebFilter(filterName = "logFilter", urlPatterns = "/*") 로 필터 등록이 가능하지만 필터 순서 조절이 안된다.
+       따라서 FilterRegistrationBean 을 사용하자.
+
+       실무에서 HTTP 요청시 같은 요청의 로그에 모두 같은 식별자를 자동으로 남기는 방법은 logback mdc로 검색
+       해보자.
