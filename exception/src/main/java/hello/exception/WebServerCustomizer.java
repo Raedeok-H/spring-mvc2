@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-//@Component // 스프링 부트가 제공하는 기본 오류 메커니즘을 사용하도록 WebServerCustomizer에 있는 @Component 를 주석처리
+@Component
 public class WebServerCustomizer implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
     @Override
     public void customize(ConfigurableServletWebServerFactory factory) {
