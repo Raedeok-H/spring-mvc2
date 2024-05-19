@@ -4,6 +4,7 @@ import hello.typeconverter.converter.IntegerToStringConverter;
 import hello.typeconverter.converter.IpPortToStringConverter;
 import hello.typeconverter.converter.StringToIntegerConverter;
 import hello.typeconverter.converter.StringToIpPortConverter;
+import hello.typeconverter.formatter.MyNumberFormatter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,10 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
      */
      @Override
      public void addFormatters(FormatterRegistry registry) {
-         registry.addConverter(new StringToIntegerConverter());
-         registry.addConverter(new IntegerToStringConverter());
+         // 우선 순위때문에 주석처리
+//         registry.addConverter(new StringToIntegerConverter());
+//         registry.addConverter(new IntegerToStringConverter());
          registry.addConverter(new StringToIpPortConverter());
          registry.addConverter(new IpPortToStringConverter());
+
+         // 추가
+         registry.addFormatter(new MyNumberFormatter());
      }
      // 그런데 생각해보면 StringToIntegerConverter 를 등록하기 전에도 이 코드는 잘 수행되었다.
      // 그것은 스프링이 내부에서 수 많은 기본 컨버터들을 제공하기 때문이다.
