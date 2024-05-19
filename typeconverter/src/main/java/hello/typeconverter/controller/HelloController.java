@@ -1,4 +1,4 @@
-package hello.typeconverter.HelloController;
+package hello.typeconverter.controller;
 
 import hello.typeconverter.type.IpPort;
 import jakarta.servlet.http.HttpServletRequest;
