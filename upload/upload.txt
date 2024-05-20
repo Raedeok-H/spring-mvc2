@@ -9,3 +9,16 @@
     ** Part
        multipart/form-data 는 application/x-www-form-urlencoded 와 비교해서 매우 복잡하고 각각의 부분( Part )로 나누어져 있다.
        그렇다면 이렇게 복잡한 HTTP 메시지를 서버에서 어떻게 사용할 수 있을까?
+
+
+    ** 업로드 사이즈 제한
+       spring.servlet.multipart.max-file-size=1MB
+       spring.servlet.multipart.max-request-size=10MB
+
+       max-file-size : 파일 하나의 최대 사이즈, 기본 1MB
+       max-request-size : 멀티파트 요청 하나에 여러 파일을 업로드 할 수 있는데, 그 전체 합이다. 기본 10MB
+
+    ** spring.servlet.multipart.enabled 끄기
+       spring.servlet.multipart.enabled=false  (기본 true)
+
+       spring.servlet.multipart.enabled 옵션을 끄면 서블릿 컨테이너는 멀티파트와 관련된 처리를 하지 않는다.
