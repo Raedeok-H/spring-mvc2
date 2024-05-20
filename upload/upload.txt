@@ -52,3 +52,23 @@
            -첨부파일을 업로드 다운로드 할 수 있다.
            -업로드한 이미지를 웹 브라우저에서 확인할 수 있다
 
+
+** 정리
+    HTML 폼 전송 방식
+        application/x-www-form-urlencoded
+        multipart/form-data
+
+    multipart/form-data 는 Part 들로 나누어져 있다.
+    spring.servlet.multipart.enabled 옵션을 끄면 안된다.(기본이 true 니까 놔두기)
+
+    Part 주요 메서드
+       part.getSubmittedFileName() : 클라이언트가 전달한 파일명
+       part.getInputStream(): Part의 전송 데이터를 읽을 수 있다.
+       part.write(...): Part를 통해 전송된 데이터를 저장할 수 있다.
+
+    MultipartFile 주요 메서드
+        file.getOriginalFilename() : 업로드 파일 명
+        file.transferTo(...) : 파일 저장
+
+    스토리지에 파일을 저장하고
+    스토리지 경로만 DB에 저장하면 된다.
