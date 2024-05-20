@@ -1,0 +1,11 @@
+** 파일 업로드 소개
+    문자와 바이너리를 동시에 전송하는 상황이다.
+    이 문제를 해결하기 위해 HTTP는 multipart/form-data 라는 전송 방식을 제공한다.
+    방식을 사용하려면 Form 태그에 별도의 enctype="multipart/form-data" 를 지정해야 한다.
+
+    multipart/form-data 방식은 다른 종류의 여러 파일과 폼의 내용 함께 전송할 수 있다.
+    (그래서 이름이 multipart 이다.)
+
+    ** Part
+       multipart/form-data 는 application/x-www-form-urlencoded 와 비교해서 매우 복잡하고 각각의 부분( Part )로 나누어져 있다.
+       그렇다면 이렇게 복잡한 HTTP 메시지를 서버에서 어떻게 사용할 수 있을까?
